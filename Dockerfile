@@ -1,10 +1,11 @@
 FROM python:3.10-slim
 
-# 補全 WeasyPrint 所有系統相依套件
+# 安裝 WeasyPrint 所需的完整系統套件（含 libpangocairo）
 RUN apt-get update && apt-get install -y \
     build-essential \
     libcairo2 \
     libpango-1.0-0 \
+    libpangocairo-1.0-0 \
     libgdk-pixbuf2.0-0 \
     libffi-dev \
     libssl-dev \
@@ -18,12 +19,12 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# 建立工作資料夾
+# 設定工作目錄
 WORKDIR /app
 COPY . /app
 
 # 安裝 Python 套件
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 啟動主程式
+# 啟動 Flask 主程式
 CMD ["python", "main.py"]
