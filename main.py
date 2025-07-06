@@ -24,6 +24,10 @@ def draw_card(force_upright=False):
     card["reversed"] = is_reversed
     return card
 
+@app.route("/")
+def home():
+    return "🔮 Ethan Tarot API 啟動成功"
+    
 @app.route("/draw", methods=["GET"])
 def draw_one():
     force_upright = request.args.get("force_upright", "false").lower() == "true"
@@ -59,4 +63,5 @@ def generate_report():
     return send_file("/tmp/report.pdf", as_attachment=True, download_name="tarot_report.pdf")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
